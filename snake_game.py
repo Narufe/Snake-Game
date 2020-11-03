@@ -1,5 +1,6 @@
 import turtle
 import time
+import random
 
 delay = 0.1
 
@@ -19,6 +20,14 @@ head.penup()
 head.goto(0,0)
 head.direction = "stop"
 
+# Snake Food
+food = turtle.Turtle()
+food.speed(0)
+food.shape("circle")
+food.color("red")
+food.penup()
+food.goto(0,100)
+
 # Functions
 def go_up():
     head.direction = "up"
@@ -26,11 +35,11 @@ def go_up():
 def go_down():
     head.direction = "down"
 
-def go_left():
-    head.direction = "left"
-
 def go_right():
     head.direction = "right"
+
+def go_left():
+    head.direction = "left"
 
 def move():
     if head.direction == "up":
@@ -41,13 +50,13 @@ def move():
         y = head.ycor()
         head.sety(y - 20)
 
-    if head.direction == "left":
-        x = head.xcor()
-        head.setx(x - 20)
-
     if head.direction == "right":
         x = head.xcor()
         head.setx(x + 20)
+
+    if head.direction == "left":
+        x = head.xcor()
+        head.setx(x - 20)
 
 # Keyboard bindings
 wn.listen()
@@ -56,15 +65,18 @@ wn.onkeypress(go_down, "s")
 wn.onkeypress(go_right, "d")
 wn.onkeypress(go_left, "a")
 
-
 # Main game loop
 while True:
     wn.update()
     
+    if head.distance(food) < 20:
+        # Move the food to a random spot
+        x = random.randint(-290, 290)
+        y = random.randint(-290, 290)
+        food.goto(x,y)
     move()
 
     time.sleep(delay)
-
 
 # Keeps the window open for us
 wn.mainloop()
