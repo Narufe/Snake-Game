@@ -4,6 +4,11 @@ import random
 
 delay = 0.1
 
+# Score
+score = 0
+high_score = 0
+
+
 # Set up the screen
 wn = turtle.Screen()
 wn.title("Snake Game by Rafe Taya")
@@ -29,6 +34,16 @@ food.penup()
 food.goto(0,100)
 
 segments = []
+
+# Pen
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write("Score: 0  High score: 0", align="center", font=("Courier", 24, "normal"))
 
 # Functions
 def go_up():
@@ -82,11 +97,20 @@ while True:
         head.direction = "stop"
         
         # Hide the segments
-        for segment in segments:
+        for segment in segments: 
             segment.goto(1000,1000)
 
         # Clear the segment list
         segments.clear()
+
+        # Reset the core
+        score = 0
+
+        # Reset the delay
+        delay = 0.1
+
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score, high_score),  align="center", font=("Courier", 24, "normal"))        
 
     # Check for collision with the food
     if head.distance(food) < 20:
@@ -102,6 +126,19 @@ while True:
         new_segment.color("grey")
         new_segment.penup()
         segments.append(new_segment)
+
+        # Shorten the delay
+        delay -= 0.001
+
+        # Increase the score
+        score += 10
+
+        if score > high_score:
+            high_score = score    
+
+        # Update the score display
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score, high_score),  align="center", font=("Courier", 24, "normal"))        
 
     # Move the end segments first in reverse
     for index in range(len(segments)-1, 0, -1):
@@ -130,6 +167,16 @@ while True:
 
             # Clear the segment list
             segments.clear()
+
+            # Reset the score
+            score = 0
+
+            # Reset the delay
+            delay = 0.1
+
+            # Update the score display
+            pen.clear()
+            pen.write("Score: {}  High Score: {}".format(score, high_score),  align="center", font=("Courier", 24, "normal"))        
 
 
     time.sleep(delay)
